@@ -17,8 +17,8 @@
 ## configure
 
 csc=mcs
-bin=./nuget-install
-tests_bin=./tests/nuget-install-tests.dll
+bin=nuget-install.exe
+tests_bin=tests/nuget-install-tests.dll
 
 ## depends: reference assemblies/tools
 
@@ -52,12 +52,16 @@ all: $(bin) $(tests_bin)
 $(bin): $(cs_units)
 	$(csc) $(cs_units) /out:$(bin) /t:exe
 
-$(tests_bin): $(bin) $(nunit_framework_asm)
+$(tests_bin): $(bin) tests/$(bin) tests/$(nunit_framework_asm)
 	$(csc) $(cs_test_units) $(test_refs) /out:$(tests_bin) /t:library
 
-$(nunit_framework_asm):
-	@echo cp -rf $(nunit_framework_path)/$(nunit_framework_asm) ./$(nunit_framework_asm)
-	@\cp -rf $(nunit_framework_path)/$(nunit_framework_asm) ./$(nunit_framework_asm)
+tests/$(bin):
+	@echo cp -rf ./$(bin) ./tests/$(bin)
+	@\cp -rf ./$(bin) ./tests/$(bin)
+
+tests/$(nunit_framework_asm):
+	@echo cp -rf $(nunit_framework_path)/$(nunit_framework_asm) ./tests/$(nunit_framework_asm)
+	@\cp -rf $(nunit_framework_path)/$(nunit_framework_asm) ./tests/$(nunit_framework_asm)
 
 # make test-depends
 test-depends:
