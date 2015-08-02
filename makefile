@@ -47,10 +47,12 @@ cs_test_units=\
 ## build system
 
 # make
-all: $(bin) $(tests_bin)
+all: $(bin)
 
 $(bin): $(cs_units)
 	$(csc) $(cs_units) /out:$(bin) /t:exe
+
+tests: $(tests_bin)
 
 $(tests_bin): $(bin) tests/$(bin) tests/$(nunit_framework_asm)
 	$(csc) $(cs_test_units) $(test_refs) /out:$(tests_bin) /t:library
@@ -69,5 +71,5 @@ test-depends:
 	chmod +x $(nunit_console_path)/$(nunit_console_bin)	
 
 # run tests
-test:
+run-tests:
 	$(nunit_console_path)/$(nunit_console_bin) $(tests_bin)
